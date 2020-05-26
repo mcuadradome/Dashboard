@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <style type="text/css">
+
+            .header{             
+                margin-top: 15px;
+                margin-bottom: 10px;
+                padding: 2px;
+            }
+
+            .formFilters{
+                width: 100%;
+                height: 60px;
+                padding: 2px;        
+                border: 1px black solid;
+            }
+            .graficas{
+                width: 100%;
+                padding: 2px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+         
+            .panel{
+                margin: 5px 5px;               
+                width: auto;
+            }
+
+            h1{
+                font-size: 40px;
+                text-align: center;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" showSummary="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <div class="header">
+                <h1>Dashboard</h1>
+            </div>
+
+            <div class="formFilters">
+                <p:panelGrid columns="4" 
+                             columnClasses="p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3"
+                             style="margin-top: 5px;">
+
+                    <h:column>
+                        <p:outputLabel value="Año:" />
+                        <p:selectOneMenu class="filter" label="Año: " id="inAge" value="#{indexMB.age}" style="width:125px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{indexMB.añosMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />                             
+                        </p:selectOneMenu>
+                    </h:column>
+
+
+                    <h:column>
+                        <p:outputLabel value="Mes:" />
+                        <p:selectOneMenu id="inMes" class="filter" label="Mes: " value="#{indexMB.month}" style="width:125px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{indexMB.mesesMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />
+
+                        </p:selectOneMenu>
+                    </h:column>
+                    
+                    <h:column>
+                        <p:outputLabel value="Ciudad:" />
+                        <p:selectOneMenu id="inCiudad" class="filter" label="Ciudad: " value="#{indexMB.city}" style="width:125px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{indexMB.ciudadesMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />
+
+                        </p:selectOneMenu>
+                    </h:column>
+                            
+                    <h:column>
+                        <p:commandButton value="Consultar" update="form, msgs" icon="ui-icon-search" actionListener="#{indexMB.buscar()}" />             
+                    </h:column>
+                </p:panelGrid>
+            </div>
+
+            <div class="graficas">
+
+                <h:panelGrid columns="3" cellspacing="2">
+
+                    <p:panel class="panel" rendered="#{indexMB.isRedendered}" >                  
+                        <p:chart type="pie" responsive="true" model="#{indexMB.pieModel1}" style="width:500px;height:300px" />
+                    </p:panel>
+
+                    <p:panel class="panel" rendered="#{indexMB.isRedendered}">
+                        <p:chart type="bar" model="#{indexMB.barModel}" style="height:300px; width: 717px;"/>
+                    </p:panel>
+
+
+                </h:panelGrid>
+
+                <p:panel class="panel" style="width: 98%; margin-left: 5px; margin-right: 5px">
+                    <p:dataTable  reflow="true" rows="15" paginator="true" 
+                                  value="#{indexMB.dashboards}" var="data" 
+                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                  rowsPerPageTemplate="5,10,15">
+                                  
+                        
+                        <p:column headerText="Producto">
+                            <h:outputText value="#{data.nombreProductoTotal}" />
+                        </p:column>
+
+                        <p:column headerText="Venta">
+                            <h:outputText value="#{data.ventalTotales}" />
+                        </p:column>
+
+                        <p:column headerText="Punto de Venta">
+                            <h:outputText value="#{data.nombrePuntoDeVenta}" />
+                        </p:column>
+
+                        <p:column headerText="Venta Punto">
+                            <h:outputText value="#{data.ventasProducto}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+
+            </div>          
+            <br />
+        </h:form>
+    </h:body>
+</html>
