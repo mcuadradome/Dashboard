@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,6 +41,7 @@ public class HechoVentas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer id;
     @Basic(optional = false)
     @NotNull
@@ -55,7 +58,7 @@ public class HechoVentas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "precio")
-    private long precio;
+    private Double precio;
     @JoinColumn(name = "dim_almacen", referencedColumnName = "id_almacen")
     @ManyToOne(optional = false)
     private DimAlmacen dimAlmacen;
@@ -85,7 +88,7 @@ public class HechoVentas implements Serializable {
         this.id = id;
     }
 
-    public HechoVentas(Integer id, int dimCategoria, int dimMarca, int unidades, long precio) {
+    public HechoVentas(Integer id, int dimCategoria, int dimMarca, int unidades, Double precio) {
         this.id = id;
         this.dimCategoria = dimCategoria;
         this.dimMarca = dimMarca;
@@ -125,11 +128,11 @@ public class HechoVentas implements Serializable {
         this.unidades = unidades;
     }
 
-    public long getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(long precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 

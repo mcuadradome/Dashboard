@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -46,6 +48,7 @@ public class DimEmpleado implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_empleado")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idEmpleado;
     @Basic(optional = false)
     @NotNull
@@ -86,7 +89,7 @@ public class DimEmpleado implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "salario")
-    private long salario;
+    private Double salario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimEmpleado")
     private List<HechoVentas> hechoVentasList;
 
@@ -97,7 +100,7 @@ public class DimEmpleado implements Serializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public DimEmpleado(Integer idEmpleado, String nombre, String identificacion, String direccion, String telefono, String email, String estadoCivil, String fechaNacimiento, long salario) {
+    public DimEmpleado(Integer idEmpleado, String nombre, String identificacion, String direccion, String telefono, String email, String estadoCivil, String fechaNacimiento, Double salario) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.identificacion = identificacion;
@@ -173,11 +176,11 @@ public class DimEmpleado implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public long getSalario() {
+    public Double getSalario() {
         return salario;
     }
 
-    public void setSalario(long salario) {
+    public void setSalario(Double salario) {
         this.salario = salario;
     }
 

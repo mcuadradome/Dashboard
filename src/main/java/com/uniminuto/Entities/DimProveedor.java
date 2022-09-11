@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -44,37 +46,33 @@ public class DimProveedor implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_provedor")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idProvedor;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "nombre_empresa")
     private String nombreEmpresa;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "direccion")
     private String direccion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "municipio")
     private String municipio;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "telefono")
     private String telefono;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "nit")
     private String nit;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimProveedor")
     private List<HechoVentas> hechoVentasList;
 

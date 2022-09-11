@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -48,11 +50,12 @@ public class DimCliente implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_cliente")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idCliente;
     @Basic(optional = false)
     @NotNull
     @Column(name = "nombre")
-    private long nombre;
+    private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -71,7 +74,6 @@ public class DimCliente implements Serializable {
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
@@ -94,7 +96,7 @@ public class DimCliente implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public DimCliente(Integer idCliente, long nombre, String identificacion, String direccion, String telefono, String email, String ciudad, Date fechaRegistro) {
+    public DimCliente(Integer idCliente, String nombre, String identificacion, String direccion, String telefono, String email, String ciudad, Date fechaRegistro) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.identificacion = identificacion;
@@ -113,11 +115,11 @@ public class DimCliente implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public long getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(long nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 

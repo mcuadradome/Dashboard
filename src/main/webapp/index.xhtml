@@ -25,15 +25,13 @@ and open the template in the editor.
 
             .formFilters{
                 width: 100%;
-                height: 60px;
-                padding: 2px;        
+                height: auto;
+                padding: 6px;        
                 border: 1px black solid;
             }
             .graficas{
                 width: 100%;
-                padding: 2px;
-                margin-left: 5px;
-                margin-right: 5px;
+                padding: 6px;
             }
          
             .panel{
@@ -44,6 +42,10 @@ and open the template in the editor.
             h1{
                 font-size: 40px;
                 text-align: center;
+            }
+            
+            .menu-bar {
+                margin-bottom: 10px;
             }
         </style>
     </h:head>
@@ -58,8 +60,15 @@ and open the template in the editor.
             <div class="header">
                 <h1>Dashboard</h1>
             </div>
+            
+            <div class="menu-bar">
+                 <p:megaMenu orientation="horizontal" autoDisplay="false" >  
+                        <p:menuitem value="Crear producto" action="#{indexMB.viewProducts()}" update="msgs" ajax="false" icon="pi pi-save"/>
+                 </p:megaMenu>
+            </div>
 
             <div class="formFilters">
+              
                 <p:panelGrid columns="4" 
                              columnClasses="p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3"
                              style="margin-top: 5px;">
@@ -102,11 +111,11 @@ and open the template in the editor.
                 <h:panelGrid columns="3" cellspacing="2">
 
                     <p:panel class="panel" rendered="#{indexMB.isRedendered}" >                  
-                        <p:chart type="pie" responsive="true" model="#{indexMB.pieModel1}" style="width:500px;height:300px" />
+                        <p:chart type="pie" responsive="true" model="#{indexMB.pieModel1}" style="width:550px;height:400px" />
                     </p:panel>
 
                     <p:panel class="panel" rendered="#{indexMB.isRedendered}">
-                        <p:chart type="bar" model="#{indexMB.barModel}" style="height:300px; width: 717px;"/>
+                        <p:chart type="bar" model="#{indexMB.barModel}" style="height:400px; width: 600px;"/>
                     </p:panel>
 
 

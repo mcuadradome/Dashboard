@@ -7,17 +7,19 @@ package com.uniminuto.Entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,30 +45,24 @@ public class DimAlmacen implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_almacen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idAlmacen;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "direccion")
     private String direccion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+
     @Column(name = "localidad")
     private String localidad;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+
     @Column(name = "municipio")
     private String municipio;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "ciudad")
     private String ciudad;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimAlmacen")
@@ -153,17 +149,20 @@ public class DimAlmacen implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DimAlmacen)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        DimAlmacen other = (DimAlmacen) object;
-        if ((this.idAlmacen == null && other.idAlmacen != null) || (this.idAlmacen != null && !this.idAlmacen.equals(other.idAlmacen))) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        return true;
+        final DimAlmacen other = (DimAlmacen) obj;
+        return Objects.equals(this.idAlmacen, other.idAlmacen);
     }
+
 
     @Override
     public String toString() {

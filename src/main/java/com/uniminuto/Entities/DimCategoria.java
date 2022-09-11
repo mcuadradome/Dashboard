@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -39,10 +41,10 @@ public class DimCategoria implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id_categoria")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idCategoria;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimCategoriaFk")

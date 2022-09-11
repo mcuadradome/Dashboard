@@ -2,7 +2,7 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="D1DBO_PU" transaction-type="JTA">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <jta-data-source>Pedidos_jndi</jta-data-source>
+    <jta-data-source>PostgresDS</jta-data-source>
     <class>com.uniminuto.Entities.DimPromocion</class>
     <class>com.uniminuto.Entities.DimCategoria</class>
     <class>com.uniminuto.Entities.HechoVentas</class>
@@ -13,7 +13,7 @@
     <class>com.uniminuto.Entities.DimAlmacen</class>
     <class>com.uniminuto.Entities.DimProveedor</class>
     <class>com.uniminuto.Entities.DimProducto</class>
-    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
       <property name="eclipselink.jdbc.batch-writing.size" value="10000"/>

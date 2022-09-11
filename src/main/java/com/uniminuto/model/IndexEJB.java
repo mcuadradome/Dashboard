@@ -8,12 +8,15 @@ package com.uniminuto.model;
 import com.uniminuto.VO.DashboardVo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -54,11 +57,10 @@ public class IndexEJB extends AbstractFacade {
         List<String> ciudad = new ArrayList<>();
         try {
 
-            Query query = em.createNativeQuery("select DISTINCT ciudad from DIM_ALMACEN;");
+            Query query = em.createNativeQuery("select DISTINCT ciudad from DIM_ALMACEN order by ciudad;");
 
             List<Object> result = query.getResultList();
-            System.out.println("Tamaño " + result.size());
-            if (result.size() > 0) {
+            if (!result.isEmpty()) {
 
                 for (Object objects : result) {
                     ciudad.add((String) objects);
@@ -75,10 +77,10 @@ public class IndexEJB extends AbstractFacade {
         List<String> anios = new ArrayList<>();
         try {
 
-            Query query = em.createNativeQuery("select DISTINCT anio from DIM_TIEMPO;");
+            Query query = em.createNativeQuery("select DISTINCT anio from DIM_TIEMPO ORDER BY anio DESC;");
 
             List<Object> result = query.getResultList();
-            if (result.size() > 0) {
+            if (!result.isEmpty()) {
                 for (Object objects : result) {
                     int anio = (int) objects;
                     anios.add(String.valueOf(anio));
@@ -96,10 +98,10 @@ public class IndexEJB extends AbstractFacade {
         List<String> meses = new ArrayList<>();
         try {
 
-            Query query = em.createNativeQuery("select DISTINCT mes from DIM_TIEMPO;");
+            Query query = em.createNativeQuery("select DISTINCT mes from DIM_TIEMPO ORDER BY mes;");
 
             List<Object> result = query.getResultList();
-            if (result.size() > 0) {
+            if (!result.isEmpty()) {
                 result.forEach((objects) -> {
                     int mes = (int) objects;
                     meses.add(String.valueOf(mes));
@@ -114,9 +116,10 @@ public class IndexEJB extends AbstractFacade {
     }
 
     public List<DashboardVo> getData(String anio, String mes, String ciudad) {
-
+        
+        System.out.println("Entro get data");
         List<DashboardVo> dashboardVos = new ArrayList<>();
-        String sql = "";
+        String sql;
         boolean isFecha = false;
 
         try {
@@ -129,22 +132,24 @@ public class IndexEJB extends AbstractFacade {
 
             if (ciudad == null) {
                 isFecha = true;
-                sql += "WHERE dt.mes= :mes AND dt.anio=:anio  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
+                sql += "WHERE dt.mes= CAST( :mes  AS INTEGER) AND dt.anio= CAST( :anio AS INTEGER) GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
             } else {
-                sql += "WHERE dt.mes=:mes AND dt.anio=:anio and da.ciudad=:ciudad  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
+                sql += "WHERE dt.mes= CAST(:mes  AS INTEGER) AND dt.anio= CAST( :anio AS INTEGER) and da.ciudad=:ciudad  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
             }
-
+            
+            System.out.println("sql " + sql);
             Query query = em.createNativeQuery(sql);
             query.setParameter("mes", mes);
-            query.setParameter("anio", anio);
+            query.setParameter("anio",anio);
             if (!isFecha) {
                 query.setParameter("ciudad", ciudad);
             }
-
+            System.out.println("query " + query.toString());
+            
             //retorna la primera consulta
             List<Object[]> result = query.getResultList();
-
-            if (result.size() > 0) {
+            System.out.println("resutl " + result.size());
+            if (!result.isEmpty()) {
                 for (Object[] objects : result) {
                     DashboardVo dashboardVo = new DashboardVo();
 
@@ -172,7 +177,7 @@ public class IndexEJB extends AbstractFacade {
 
     public List<Object[]> getDataAlmacen(String anio, String mes, String ciudad) {
 
-        String sql = "";
+        String sql;
         boolean isFecha = false;
 
         try {
@@ -186,9 +191,9 @@ public class IndexEJB extends AbstractFacade {
 
             if (ciudad == null) {
                 isFecha = true;
-                sql += "WHERE dt.mes= :mes AND dt.anio=:anio  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
+                sql += "WHERE dt.mes= CAST( :mes  AS INTEGER) AND dt.anio= CAST( :anio  AS INTEGER)  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
             } else {
-                sql += "WHERE dt.mes=:mes AND dt.anio=:anio and da.ciudad0 :ciudad  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
+                sql += "WHERE dt.mes= CAST( :mes  AS INTEGER) AND dt.anio= CAST( :anio  AS INTEGER) and da.ciudad0 :ciudad  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
             }
 
             Query query = em.createNativeQuery(sql);
@@ -208,5 +213,6 @@ public class IndexEJB extends AbstractFacade {
 
         return null;
     }
+    
 
 }

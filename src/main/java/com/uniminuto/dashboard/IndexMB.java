@@ -8,14 +8,11 @@ package com.uniminuto.dashboard;
 import com.uniminuto.VO.DashboardVo;
 import com.uniminuto.model.IndexEJB;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +21,11 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import org.primefaces.component.dashboard.Dashboard;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -94,8 +89,10 @@ public class IndexMB implements Serializable {
     }
 
     public void buscar() {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        
+        try {
+            
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         //String newFecha = formatter.format(date);
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
@@ -116,18 +113,24 @@ public class IndexMB implements Serializable {
         } else{
             dashboards = indexEJB.getData(age, month, null);
         }
-            if( dashboards.size() > 0){
+            if(!dashboards.isEmpty()){
                isRedendered=true;
                 createPieModel1();
                 createBarModel();
             }
+            
+        } catch (Exception e) {
+            System.err.println("com.uniminuto.dashboard.IndexMB.buscar()" + e.getMessage());
+        }
+
+       
         
     }
 
     private void createPieModel1() {
         pieModel1 = new PieChartModel();
         pieModel1.setTitle("Productos con mayor venta");
-        pieModel1.setLegendPosition("c");
+        //pieModel1.setLegendPosition("c");
         pieModel1.setFill(true);
         for (DashboardVo obj : dashboards) {
             pieModel1.set(obj.getNombreProducto(), obj.getVentasProducto());
@@ -166,6 +169,16 @@ public class IndexMB implements Serializable {
  
         return model;
     }
+     
+         
+    public void viewProducts() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("resizable", false);
+        PrimeFaces.current().dialog().openDynamic("producto.xhtml", options, null);
+    }
+
+     
+     
 
     public PieChartModel getPieModel1() {
         return pieModel1;
