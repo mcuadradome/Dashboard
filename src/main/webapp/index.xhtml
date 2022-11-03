@@ -1,155 +1,143 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
     <h:head>
-        <title>Dashboard</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-        <style type="text/css">
-
-            .header{             
-                margin-top: 15px;
-                margin-bottom: 10px;
-                padding: 2px;
-            }
-
-            .formFilters{
-                width: 100%;
-                height: auto;
-                padding: 6px;        
-                border: 1px black solid;
-            }
-            .graficas{
-                width: 100%;
-                padding: 6px;
-            }
-         
-            .panel{
-                margin: 5px 5px;               
-                width: auto;
-            }
-
-            h1{
-                font-size: 40px;
-                text-align: center;
-            }
-            
-            .menu-bar {
-                margin-bottom: 10px;
-            }
-        </style>
+        <title>Login</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     </h:head>
-
     <h:body>
+        <div class="card card-body position-absolute top-50 start-50 translate-middle mx-auto w-75">
+            <!-- Pills navs -->
+        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="tab-login" data-mdb-toggle="pill" href="#pills-login" role="tab"
+                   aria-controls="pills-login" aria-selected="true">Login</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="tab-register" data-mdb-toggle="pill" href="#pills-register" role="tab"
+                   aria-controls="pills-register" aria-selected="false">Register</a>
+            </li>
+        </ul>
+        <!-- Pills navs -->
 
-        <h:form id="form">
-            <p:messages id="msgs" showDetail="true" showSummary="true">
-                <p:autoUpdate />
-            </p:messages>
+        <!-- Pills content -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                <form id="formAccess">
+                   
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input type="email" id="loginName" class="form-control" />
+                        <label class="form-label" for="loginName">Email</label>
+                    </div>
 
-            <div class="header">
-                <h1>Dashboard</h1>
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <input type="password" id="loginPassword" class="form-control" />
+                        <label class="form-label" for="loginPassword">Password</label>
+                    </div>
+
+                    <!-- 2 column grid layout -->
+                    <div class="row mb-4">
+<!--                        <div class="col-md-6 d-flex justify-content-center">
+                             Checkbox 
+                            <div class="form-check mb-3 mb-md-0">
+                                <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
+                                <label class="form-check-label" for="loginCheck"> Remember me </label>
+                            </div>
+                        </div>-->
+
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <!-- Simple link -->
+                            <a href="#!">Forgot password?</a>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+                    <!-- Register buttons -->
+                    <div class="text-center">
+                        <p>Not a member? <a href="#!">Register</a></p>
+                    </div>
+                </form>
             </div>
-            
-            <div class="menu-bar">
-                 <p:megaMenu orientation="horizontal" autoDisplay="false" >  
-                        <p:menuitem value="Crear producto" action="#{indexMB.viewProducts()}" update="msgs" ajax="false" icon="pi pi-save"/>
-                 </p:megaMenu>
+            <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+                <form id="formRegister">
+                    <div class="text-center mb-3">
+                        <p>Sign up with:</p>
+                        <button type="button" class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-google"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-github"></i>
+                        </button>
+                    </div>
+
+                    <p class="text-center">or:</p>
+
+                    <!-- Name input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" id="registerName" class="form-control" />
+                        <label class="form-label" for="registerName">Name</label>
+                    </div>
+
+                    <!-- Username input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" id="registerUsername" class="form-control" />
+                        <label class="form-label" for="registerUsername">Username</label>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input type="email" id="registerEmail" class="form-control" />
+                        <label class="form-label" for="registerEmail">Email</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        <input type="password" id="registerPassword" class="form-control" />
+                        <label class="form-label" for="registerPassword">Password</label>
+                    </div>
+
+                    <!-- Repeat Password input -->
+                    <div class="form-outline mb-4">
+                        <input type="password" id="registerRepeatPassword" class="form-control" />
+                        <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                    </div>
+
+                    <!-- Checkbox -->
+<!--                    <div class="form-check d-flex justify-content-center mb-4">
+                        <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+                               aria-describedby="registerCheckHelpText" />
+                        <label class="form-check-label" for="registerCheck">
+                            I have read and agree to the terms
+                        </label>
+                    </div>-->
+
+                    <!-- Submit button -->
+                    <p:commandButton type="submit" class="btn btn-primary btn-block mb-3"  action="#{indexMB.ingresar()}" >Ingresar</p:commandButton>
+                </form>
             </div>
-
-            <div class="formFilters">
-              
-                <p:panelGrid columns="4" 
-                             columnClasses="p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3"
-                             style="margin-top: 5px;">
-
-                    <h:column>
-                        <p:outputLabel value="Año:" />
-                        <p:selectOneMenu class="filter" label="Año: " id="inAge" value="#{indexMB.age}" style="width:125px">
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />
-                            <f:selectItems value="#{indexMB.añosMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />                             
-                        </p:selectOneMenu>
-                    </h:column>
-
-
-                    <h:column>
-                        <p:outputLabel value="Mes:" />
-                        <p:selectOneMenu id="inMes" class="filter" label="Mes: " value="#{indexMB.month}" style="width:125px">
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />
-                            <f:selectItems value="#{indexMB.mesesMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />
-
-                        </p:selectOneMenu>
-                    </h:column>
-                    
-                    <h:column>
-                        <p:outputLabel value="Ciudad:" />
-                        <p:selectOneMenu id="inCiudad" class="filter" label="Ciudad: " value="#{indexMB.city}" style="width:125px">
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />
-                            <f:selectItems value="#{indexMB.ciudadesMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />
-
-                        </p:selectOneMenu>
-                    </h:column>
-                            
-                    <h:column>
-                        <p:commandButton value="Consultar" update="form, msgs" icon="ui-icon-search" actionListener="#{indexMB.buscar()}" />             
-                    </h:column>
-                </p:panelGrid>
-            </div>
-
-            <div class="graficas">
-
-                <h:panelGrid columns="3" cellspacing="2">
-
-                    <p:panel class="panel" rendered="#{indexMB.isRedendered}" >                  
-                        <p:chart type="pie" responsive="true" model="#{indexMB.pieModel1}" style="width:550px;height:400px" />
-                    </p:panel>
-
-                    <p:panel class="panel" rendered="#{indexMB.isRedendered}">
-                        <p:chart type="bar" model="#{indexMB.barModel}" style="height:400px; width: 600px;"/>
-                    </p:panel>
-
-
-                </h:panelGrid>
-
-                <p:panel class="panel" style="width: 98%; margin-left: 5px; margin-right: 5px">
-                    <p:dataTable  reflow="true" rows="15" paginator="true" 
-                                  value="#{indexMB.dashboards}" var="data" 
-                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                  rowsPerPageTemplate="5,10,15">
-                                  
-                        
-                        <p:column headerText="Producto">
-                            <h:outputText value="#{data.nombreProductoTotal}" />
-                        </p:column>
-
-                        <p:column headerText="Venta">
-                            <h:outputText value="#{data.ventalTotales}" />
-                        </p:column>
-
-                        <p:column headerText="Punto de Venta">
-                            <h:outputText value="#{data.nombrePuntoDeVenta}" />
-                        </p:column>
-
-                        <p:column headerText="Venta Punto">
-                            <h:outputText value="#{data.ventasProducto}" />
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-
-
-            </div>          
-            <br />
-        </h:form>
-    </h:body>
+        </div>
+        <!-- Pills content -->
+        </div>
+     </h:body>
 </html>
+

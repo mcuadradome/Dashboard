@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "DIM_MARCA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DimMarca.findAll", query = "SELECT d FROM DimMarca d")
+    @NamedQuery(name = "DimMarca.findAll", query = "SELECT d FROM DimMarca d"),
+    @NamedQuery(name = "DimMarca.findAllOrder", query = "SELECT d FROM DimMarca d ORDER BY d.nombre")
     , @NamedQuery(name = "DimMarca.findByIdMarca", query = "SELECT d FROM DimMarca d WHERE d.idMarca = :idMarca")
     , @NamedQuery(name = "DimMarca.findByNombre", query = "SELECT d FROM DimMarca d WHERE d.nombre = :nombre")})
 public class DimMarca implements Serializable {
