@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.uniminuto.dashboard;
+package com.uniminuto.managedBeans;
 
 import java.io.IOException;
 import javax.inject.Named;
@@ -32,17 +32,16 @@ public class IndexMB implements Serializable {
 
     }   
     
-    public void ingresar(){
-        try {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = facesContext.getExternalContext();
-            System.out.println("com.uniminuto.dashboard.IndexMB.ingresar()");
-            externalContext.redirect("products.xhtml");
-       
-        } catch (IOException e) {
-            System.err.println("Error " + e.getMessage());
-        }
+    public String ingresar(){
+       String redirect = "";    
+       return redirect = "/protected/products";
+        
+     
        
     }
     
+    
+     public String register(){
+         return null;
+     }
 }

@@ -1,5 +1,4 @@
-
-package com.uniminuto.dashboard;
+package com.uniminuto.managedBeans;
 
 import com.uniminuto.Entities.DimProducto;
 import com.uniminuto.VO.DashboardVo;
@@ -7,10 +6,14 @@ import com.uniminuto.model.IndexEJB;
 import com.uniminuto.model.ProductoEJB;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -41,18 +44,20 @@ public class ProductoMB implements Serializable {
     private String city;
     private String month;
     private List<String> ciudades = new ArrayList<>();
-    private List<String> años = new ArrayList<>();
-    private List<String> meses = new ArrayList<>();
+    private List<String> years = new ArrayList<>();
+    private List<Integer> meses = new ArrayList<>();
 
     private Map<String, String> ciudadesMap = new LinkedHashMap<>();
-    private Map<String, String> añosMap = new LinkedHashMap<>();
-    private Map<String, String> mesesMap = new LinkedHashMap<>();
+    private Map<String, String> yearsMap = new LinkedHashMap<>();
+    private Map<Integer, String> mesesMap = new LinkedHashMap<>();
     private boolean isRedendered;
     private List<DashboardVo> dashboards = new ArrayList<>();
     private List<DimProducto> products = new ArrayList<>();
     private DimProducto selectedProduct;
     private List<DimProducto> selectedProducts;
     
+//    NumberFormat usdCostFormat;
+
     @EJB
     ProductoEJB productoEJB;
 
@@ -61,71 +66,68 @@ public class ProductoMB implements Serializable {
 
     @PostConstruct
     public void init() {
-        isRedendered=false;
+        Locale locale = new Locale("es","CO");
+        
+//        usdCostFormat = NumberFormat.getCurrencyInstance(locale);
+//        usdCostFormat.setMinimumFractionDigits( 1 );
+//        usdCostFormat.setMaximumFractionDigits( 2 );
+    
+        isRedendered = false;
         ciudades = productoEJB.getCiudades();
-        años = productoEJB.getAnio();
+        years = productoEJB.getAnio();
         meses = productoEJB.getMes();
-        System.out.println("Tamaños " + ciudades.size() + años.size() + meses.size());
+
         for (String ciudade : ciudades) {
             ciudadesMap.put(ciudade, ciudade);
         }
 
-        for (String age : años) {
-            añosMap.put(age, age);
-        }
+        years.forEach((ages) -> {
+            yearsMap.put(ages, ages);
+        });
 
-        for (String month : meses) {
-            //int numberMonth = Integer.parseInt(month);
-            //String nameMonth = getMonth(numberMonth+1);
-            mesesMap.put(month, month);
-        }
+        meses.forEach((value) -> {
+            mesesMap.put(value, Month.of(value).getDisplayName(TextStyle.FULL, locale));
+        });
+        
+        onLoadProducts();
 
-    }
-    
-       public String getMonth(int month) {
-        String[] monthNames = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
-            "Diciembre"};
-        return monthNames[month];
     }
 
     public void buscar() {
-        
+
         try {
-            
-        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        //String newFecha = formatter.format(date);
-        FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        if (age == null) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Año es requerido"));
-            return;
-        }
+            //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            //String newFecha = formatter.format(date);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        if (month == null) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Mes es requerido"));
-            return;
-        }
-        
-        System.out.println("Filtros consulta " + age +" "+ month);
-      
-        if (city != null) {           
-            dashboards = productoEJB.getData(age, month, city);
-        } else{
-            dashboards = productoEJB.getData(age, month, null);
-        }
-            if(!dashboards.isEmpty()){
-               isRedendered=true;
+            if (age == null) {
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Año es requerido"));
+                return;
+            }
+
+            if (month == null) {
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Mes es requerido"));
+                return;
+            }
+
+            System.out.println("Filtros consulta " + age + " " + month);
+
+            if (city != null) {
+                dashboards = productoEJB.getData(age, month, city);
+            } else {
+                dashboards = productoEJB.getData(age, month, null);
+            }
+            if (!dashboards.isEmpty()) {
+                isRedendered = true;
                 createPieModel1();
                 createBarModel();
             }
-            
+
         } catch (Exception e) {
             System.err.println("com.uniminuto.dashboard.IndexMB.buscar()" + e.getMessage());
         }
 
-       
-        
     }
 
     private void createPieModel1() {
@@ -134,45 +136,50 @@ public class ProductoMB implements Serializable {
         //pieModel1.setLegendPosition("c");
         pieModel1.setFill(true);
         for (DashboardVo obj : dashboards) {
-            pieModel1.set(obj.getNombreProducto(), obj.getVentasProducto());
+//            String val= usdCostFormat.format(obj.getVentasProducto().doubleValue());
+            pieModel1.set(obj.getNombreProducto(), obj.getVentasProducto().doubleValue());
         }
     }
-    
+
     private void createBarModel() {
         barModel = initBarModel();
- 
+
         barModel.setTitle("Venta por puntos");
         barModel.setLegendPosition("ne");
         barModel.setAnimate(true);
-        
+
         Axis xAxis = barModel.getAxis(AxisType.X);
         xAxis.setLabel("Punto de venta");
- 
+
         Axis yAxis = barModel.getAxis(AxisType.Y);
         yAxis.setLabel("Venta");
         yAxis.setMin(0);
         BigDecimal max = BigDecimal.valueOf(1000);
         yAxis.setMax(dashboards.get(0).getVentasProducto().add(max));
     }
-    
-     private BarChartModel initBarModel() {
+
+    private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
- 
+
         ChartSeries pVenta = new ChartSeries();
         pVenta.setLabel("Ciudad");
-        
-         for (DashboardVo obj : dashboards) {
-             String nombre = obj.getNombrePuntoDeVenta().substring(0, 3);
-             pVenta.set(nombre, obj.getVentasProducto());
-           
-        }            
+
+        for (DashboardVo obj : dashboards) {
+            String nombre = obj.getNombrePuntoDeVenta().substring(0, 3);
+            pVenta.set(nombre, obj.getVentasProducto());
+
+        }
         model.addSeries(pVenta);
- 
+
         return model;
     }
-     
-         
-     public void openNew() {
+
+    public void onLoadProducts() {
+        products = productoEJB.getProducts();
+        System.out.println("Load products " + products.size());
+    }
+
+    public void openNew() {
         this.selectedProduct = new DimProducto();
     }
 
@@ -180,8 +187,7 @@ public class ProductoMB implements Serializable {
         if (this.selectedProduct.getIdProducto() == null) {
             this.products.add(this.selectedProduct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Creado"));
-        }
-        else {
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Actualizado"));
         }
 
@@ -193,17 +199,17 @@ public class ProductoMB implements Serializable {
         this.products.remove(this.selectedProduct);
         this.selectedProducts.remove(this.selectedProduct);
         this.selectedProduct = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Removed"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Eliminado"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
     public String getDeleteButtonMessage() {
         if (hasSelectedProducts()) {
             int size = this.selectedProducts.size();
-            return size > 1 ? size + " products selected" : "1 product selected";
+            return size > 1 ? size + " productos seleccionados" : "1 producto seleccionado";
         }
 
-        return "Delete";
+        return "Eliminar";
     }
 
     public boolean hasSelectedProducts() {
@@ -217,11 +223,6 @@ public class ProductoMB implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
     }
-    
-    
-
-     
-     
 
     public PieChartModel getPieModel1() {
         return pieModel1;
@@ -271,19 +272,12 @@ public class ProductoMB implements Serializable {
         this.ciudades = ciudades;
     }
 
-    public List<String> getAños() {
-        return años;
-    }
 
-    public void setAños(List<String> años) {
-        this.años = años;
-    }
-
-    public List<String> getMeses() {
+    public List<Integer> getMeses() {
         return meses;
     }
 
-    public void setMeses(List<String> meses) {
+    public void setMeses(List<Integer> meses) {
         this.meses = meses;
     }
 
@@ -295,19 +289,11 @@ public class ProductoMB implements Serializable {
         this.ciudadesMap = ciudadesMap;
     }
 
-    public Map<String, String> getAñosMap() {
-        return añosMap;
-    }
-
-    public void setAñosMap(Map<String, String> añosMap) {
-        this.añosMap = añosMap;
-    }
-
-    public Map<String, String> getMesesMap() {
+    public Map<Integer, String> getMesesMap() {
         return mesesMap;
     }
 
-    public void setMesesMap(Map<String, String> mesesMap) {
+    public void setMesesMap(Map<Integer, String> mesesMap) {
         this.mesesMap = mesesMap;
     }
 
@@ -358,7 +344,23 @@ public class ProductoMB implements Serializable {
     public void setSelectedProducts(List<DimProducto> selectedProducts) {
         this.selectedProducts = selectedProducts;
     }
+
+    public List<String> getYears() {
+        return years;
+    }
+
+    public void setYears(List<String> years) {
+        this.years = years;
+    }
+
+    public Map<String, String> getYearsMap() {
+        return yearsMap;
+    }
+
+    public void setYearsMap(Map<String, String> yearsMap) {
+        this.yearsMap = yearsMap;
+    }
+    
     
 
-    
 }

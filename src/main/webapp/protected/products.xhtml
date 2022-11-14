@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <style type="text/css">
+
+            .header{
+                margin-top: 15px;
+                margin-bottom: 10px;
+                padding: 2px;
+            }
+
+            .formFilters{
+                width: 100%;
+                height: auto;
+                padding: 6px;
+                border: 1px black solid;
+            }
+            .graficas{
+                width: 100%;
+                padding: 6px;
+            }
+
+            .panel{
+                margin: 5px 5px;
+                width: auto;
+            }
+
+            h1{
+                font-size: 40px;
+                text-align: center;
+            }
+
+            .menu-bar {
+                margin-bottom: 10px;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" showSummary="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <div class="header">
+                <h1>Dashboard</h1>
+            </div>
+
+            <div class="menu-bar">
+                <p:menubar  autoDisplay="false">
+                    <p:submenu label="Administracion" icon="pi pi-fw pi-video" >
+                        <p:menuitem value="Crear producto" icon="pi pi-globe" onclick="PF('dlg').show();" />
+                        <p:menuitem value="Crear Marca" icon="pi pi-globe"  />
+                        <p:menuitem value="Crear Categoria" icon="pi pi-globe"  />
+                    </p:submenu>
+                </p:menubar>
+                <!--                 <p:megaMenu orientation="horizontal" autoDisplay="false" >  
+                                        <p:menuitem value="Crear producto" action="PF('dlg').show();" update="msgs" ajax="false" icon="pi pi-save"/>
+                                 </p:megaMenu>-->
+                <!--<p:commandButton id="btn" type="button" icon="pi pi-globe" value="Crear producto" onclick="PF('dlg').show();"/>-->
+            </div>
+
+            <div class="formFilters">
+
+                <p:panelGrid columns="4" 
+                             columnClasses="p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3"
+                             style="margin-top: 5px;">
+
+                    <h:column>
+                        <p:outputLabel value="Año:" style="margin-right: 5px" />
+                        <p:selectOneMenu class="filter" label="Año: " id="inAge" value="#{productoMB.age}" style="width:125px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{productoMB.yearsMap.entrySet()}" var="year" itemLabel="#{year.value}" itemValue="#{year.key}" />                             
+                        </p:selectOneMenu>
+                    </h:column>
+
+
+                    <h:column>
+                        <p:outputLabel value="Mes:" style="margin-right: 5px" />
+                        <p:selectOneMenu id="inMes" class="filter" label="Mes: " value="#{productoMB.month}" style="width:125px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{productoMB.mesesMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />
+
+                        </p:selectOneMenu>
+                    </h:column>
+
+                    <h:column>
+                        <p:outputLabel value="Ciudad:" style="margin-right: 5px" />
+                        <p:selectOneMenu id="inCiudad" class="filter" label="Ciudad: " value="#{productoMB.city}" style="width:125px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{productoMB.ciudadesMap.entrySet()}" var="zona" itemLabel="#{zona.value}" itemValue="#{zona.key}" />
+
+                        </p:selectOneMenu>
+                    </h:column>
+
+                    <h:column>
+                        <p:commandButton value="Consultar" update="form, msgs" icon="ui-icon-search" actionListener="#{productoMB.buscar()}" />             
+                    </h:column>
+                </p:panelGrid>
+            </div>
+
+            <div class="graficas">
+
+                <h:panelGrid columns="3" cellspacing="2">
+
+                    <p:panel class="panel" rendered="#{productoMB.isRedendered}" >                  
+                        <p:chart type="pie" responsive="true" model="#{productoMB.pieModel1}" style="width:550px;height:400px" />
+                    </p:panel>
+
+                    <p:panel class="panel" rendered="#{productoMB.isRedendered}">
+                        <p:chart type="bar" model="#{productoMB.barModel}" style="height:400px; width: 600px;"/>
+                    </p:panel>
+
+
+                </h:panelGrid>
+
+                <p:panel class="panel" style="width: 98%; margin-left: 5px; margin-right: 5px">
+                    <p:dataTable  reflow="true" rows="15" paginator="true" 
+                                  scrollable="true"
+                                  value="#{productoMB.dashboards}" var="data" 
+                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                  scrollHeight="450px"
+                                  rowsPerPageTemplate="5,10,15">
+
+
+                        <p:column headerText="Producto">
+                            <h:outputText value="#{data.nombreProductoTotal}" />
+                        </p:column>
+
+                        <p:column headerText="Venta">
+                            <h:outputText value="#{data.ventalTotales}" style="font-weight: 700">
+                                <f:convertNumber currencySymbol="$" type="currency" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Punto de Venta">
+                            <h:outputText value="#{data.nombrePuntoDeVenta}" />
+                        </p:column>
+
+                        <p:column headerText="Venta Punto">
+                            <h:outputText value="#{data.ventasProducto}" style="font-weight: 700">
+                                <f:convertNumber currencySymbol="$" type="currency" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+
+            </div>          
+            <br />
+        </h:form>
+        <h:form id="dialogs">
+            <p:dialog id="prdDialog" widgetVar="dlg" width="80%" height="500px" responsive="true" modal="true">
+
+                <p:growl id="messages" showDetail="true" />
+                <h1>Productos</h1>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{productoMB.openNew()}"
+                                         update=":dialogs:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:manage-product-content" />
+                        </p:commandButton>
+                        <p:commandButton id="delete-products-button" value="#{productoMB.deleteButtonMessage}"
+                                         icon="pi pi-trash" actionListener="#{productoMB.deleteSelectedProducts}"
+                                         styleClass="ui-button-danger" disabled="#{!productoMB.hasSelectedProducts()}" update="@this">
+                            <p:confirm header="Confirmation" message="Eliminar los productos seleccionados?"
+                                       icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+
+
+                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{productoMB.products}"
+                             reflow="true" styleClass="products-table" selection="#{productoMB.selectedProducts}"
+                             rowKey="#{product.idProducto}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                             scrollHeight="550px"
+                             rowsPerPageTemplate="5,10,15"
+                              paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <div class="products-table-header">
+                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search" />
+                            </span>
+                        </div>
+                    </f:facet>
+
+                    <p:ajax event="rowSelect" update=":dialogs:delete-products-button" />
+                    <p:ajax event="rowUnselect" update=":dialogs:delete-products-button" />
+                    <p:ajax event="rowSelectCheckbox" update=":dialogs:delete-products-button" />
+                    <p:ajax event="rowUnselectCheckbox" update=":dialogs:delete-products-button" />
+                    <p:ajax event="toggleSelect" update=":dialogs:delete-products-button" />
+
+                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                    <p:column headerText="Codigo" sortBy="#{product.codProdcuto}" filterBy="#{product.codProdcuto}">
+                        <h:outputText value="#{product.codProdcuto}" />
+                    </p:column>
+                    <p:column headerText="Fabricante" sortBy="#{product.fabricante}" filterBy="#{product.fabricante}">
+                        <h:outputText value="#{product.fabricante}" />
+                    </p:column>
+                    <p:column headerText="Nombre" sortBy="#{product.nombre}" filterBy="#{product.nombre}">
+                        <h:outputText value="#{product.nombre}" />
+                    </p:column>
+                    <p:column headerText="Peso" sortBy="{product.peso}">
+                        <h:outputText value="#{product.peso}" style="font-weight: 700">
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cantidad" sortBy="#{product.cantidad}">
+                        <h:outputText value="#{product.cantidad}" style="font-weight: 700">
+                            <f:convertNumber currencySymbol="" type="currency" maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+
+                   
+                    <p:column exportable="false">
+                         <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content"
+                                          oncomplete="PF('manageProductDialog').show()"
+                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
+                             <f:setPropertyActionListener value="#{product}" target="#{productoMB.selectedProduct}" />
+                             <p:resetInput target=":dialogs:manage-product-content" />
+                         </p:commandButton>
+                         <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" style="margin-left: 5px"
+                                          process="@this"
+                                          oncomplete="PF('deleteProductDialog').show()">
+                             <f:setPropertyActionListener value="#{product}" target="#{productoMB.selectedProduct}" />
+                         </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>   
+            </p:dialog>
+
+            <p:dialog  header="Detalles producto" showEffect="fade" widgetVar="manageProductDialog" responsive="true" modal="true">
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty productoMB.selectedProduct}">
+                        <div class="field" style="margin-top: 5px">
+                            <p:outputLabel for="name">Nombre</p:outputLabel>
+                            <p:inputText id="name" value="#{productoMB.selectedProduct.nombre}" required="true" />
+                        </div>
+                        <div class="field" style="margin-top: 5px">
+                            <p:outputLabel for="fabricante">Fabricante</p:outputLabel>
+                            <p:inputText id="fabricante" value="#{productoMB.selectedProduct.fabricante}" />
+                        </div>
+                        <div class="field" style="margin-top: 5px">
+                            <p:outputLabel for="cantidad">Cantidad</p:outputLabel>
+                            <p:inputText id="cantidad" value="#{productoMB.selectedProduct.cantidad}" />
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <f:facet name="footer">
+                    <p:commandButton value="Actualizar" icon="pi pi-check" actionListener="#{productoMB.saveProduct()}"
+                                     update="manage-product-content" process="manage-product-content @this" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                             message="Delete the product?" header="Confirm" severity="warn">
+                <p:commandButton value="Si" icon="pi pi-check" actionListener="#{productoMB.deleteProduct()}"
+                                 process="@this" update=":dialogs:delete-products-button"
+                                 oncomplete="PF('deleteProductDialog').hide()" />
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteProductDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                 icon="pi pi-times" />
+            </p:confirmDialog>
+        </h:form>
+    </h:body>
+
+</html>

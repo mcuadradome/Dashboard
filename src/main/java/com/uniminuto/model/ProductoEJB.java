@@ -6,10 +6,17 @@ package com.uniminuto.model;
 
 import com.uniminuto.Entities.DimCategoria;
 import com.uniminuto.Entities.DimMarca;
+import com.uniminuto.Entities.DimProducto;
 import com.uniminuto.VO.DashboardVo;
 import java.math.BigDecimal;
+import java.time.Month;
+import java.time.ZonedDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -52,22 +59,22 @@ public class ProductoEJB extends AbstractFacade {
     }
 
     public List<DimMarca> getMarcas() {
-    List<DimMarca> result = new ArrayList<>();
+        List<DimMarca> result = new ArrayList<>();
         try {
             Query query = em.createNamedQuery("DimMarca.findAllOrder", DimMarca.class);
-             result = query.getResultList();
+            result = query.getResultList();
 
         } catch (Exception e) {
             System.out.println("Error al consultar ciudades " + e.getMessage());
 
         }
-        
-        return  result;
+
+        return result;
 
     }
-    
+
     public List<DimCategoria> getCategorias() {
-    List<DimCategoria> result = new ArrayList<>();
+        List<DimCategoria> result = new ArrayList<>();
         try {
             Query query = em.createNamedQuery("DimCategoria.findAllOrder", DimCategoria.class);
             result = query.getResultList();
@@ -75,11 +82,11 @@ public class ProductoEJB extends AbstractFacade {
             System.out.println("Error al consultar ciudades " + e.getMessage());
 
         }
-        
-        return  result;
+
+        return result;
 
     }
-    
+
     public List<String> getCiudades() {
         List<String> ciudad = new ArrayList<>();
         try {
@@ -120,17 +127,16 @@ public class ProductoEJB extends AbstractFacade {
         return anios;
     }
 
-    public List<String> getMes() {
-        List<String> meses = new ArrayList<>();
+    public List<Integer> getMes() {
+        List<Integer> meses = new ArrayList<>();
         try {
 
             Query query = em.createNativeQuery("select DISTINCT mes from DIM_TIEMPO ORDER BY mes;");
-
             List<Object> result = query.getResultList();
             if (!result.isEmpty()) {
                 result.forEach((objects) -> {
-                    int mes = (int) objects;
-                    meses.add(String.valueOf(mes));
+                    int mes = (int) objects;               
+                    meses.add(mes);
                 });
             }
 
@@ -142,7 +148,7 @@ public class ProductoEJB extends AbstractFacade {
     }
 
     public List<DashboardVo> getData(String anio, String mes, String ciudad) {
-        
+
         System.out.println("Entro get data");
         List<DashboardVo> dashboardVos = new ArrayList<>();
         String sql;
@@ -162,16 +168,16 @@ public class ProductoEJB extends AbstractFacade {
             } else {
                 sql += "WHERE dt.mes= CAST(:mes  AS INTEGER) AND dt.anio= CAST( :anio AS INTEGER) and da.ciudad=:ciudad  GROUP BY dp.nombre, da.ciudad ORDER BY ventasPro DESC";
             }
-            
+
             System.out.println("sql " + sql);
             Query query = em.createNativeQuery(sql);
             query.setParameter("mes", mes);
-            query.setParameter("anio",anio);
+            query.setParameter("anio", anio);
             if (!isFecha) {
                 query.setParameter("ciudad", ciudad);
             }
             System.out.println("query " + query.toString());
-            
+
             //retorna la primera consulta
             List<Object[]> result = query.getResultList();
             System.out.println("resutl " + result.size());
@@ -198,8 +204,6 @@ public class ProductoEJB extends AbstractFacade {
 
         return dashboardVos;
     }
-
- 
 
     public List<Object[]> getDataAlmacen(String anio, String mes, String ciudad) {
 
@@ -239,7 +243,11 @@ public class ProductoEJB extends AbstractFacade {
 
         return null;
     }
-    
-    
+
+    public List<DimProducto> getProducts() {
+        System.out.println("com.uniminuto.model.ProductoEJB.getProducts()");
+        Query query = em.createNamedQuery("DimProducto.findAll");
+        return query.getResultList();
+    }
 
 }
