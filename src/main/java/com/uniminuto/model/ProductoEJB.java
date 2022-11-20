@@ -245,9 +245,43 @@ public class ProductoEJB extends AbstractFacade {
     }
 
     public List<DimProducto> getProducts() {
-        System.out.println("com.uniminuto.model.ProductoEJB.getProducts()");
         Query query = em.createNamedQuery("DimProducto.findAll");
         return query.getResultList();
+    }
+    
+    public boolean saveProducts(List<DimProducto> dimProductos){
+        
+        boolean result = true;
+        for (DimProducto dimProducto : dimProductos) {
+            DimProducto prd = em.merge(dimProducto);
+            
+            if(prd.getIdProducto() == null){
+                result = false;
+            }
+        }
+        
+        return  result;
+  
+    }
+    
+    public DimProducto saveProduct(DimProducto producto){
+        if(producto != null){
+            producto = em.merge(producto);
+        }    
+        return  producto;
+    }
+    
+    public void deleteProducts(List<DimProducto> dimProductos){
+        for (DimProducto dimProducto : dimProductos) {
+            em.remove(dimProducto);     
+        }
+    }
+    
+    public void deleteProduct(DimProducto producto){
+        if(producto != null){
+           em.remove(producto);
+        }    
+       
     }
 
 }

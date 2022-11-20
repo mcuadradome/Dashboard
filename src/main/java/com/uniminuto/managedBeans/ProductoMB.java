@@ -176,7 +176,6 @@ public class ProductoMB implements Serializable {
 
     public void onLoadProducts() {
         products = productoEJB.getProducts();
-        System.out.println("Load products " + products.size());
     }
 
     public void openNew() {
@@ -185,9 +184,11 @@ public class ProductoMB implements Serializable {
 
     public void saveProduct() {
         if (this.selectedProduct.getIdProducto() == null) {
+            productoEJB.saveProduct(selectedProduct);
             this.products.add(this.selectedProduct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Creado"));
         } else {
+            productoEJB.saveProduct(selectedProduct);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Actualizado"));
         }
 
@@ -196,6 +197,7 @@ public class ProductoMB implements Serializable {
     }
 
     public void deleteProduct() {
+        productoEJB.deleteProduct(selectedProduct);
         this.products.remove(this.selectedProduct);
         this.selectedProducts.remove(this.selectedProduct);
         this.selectedProduct = null;
@@ -217,11 +219,17 @@ public class ProductoMB implements Serializable {
     }
 
     public void deleteSelectedProducts() {
+        
+        this.productoEJB.deleteProducts(selectedProducts);
         this.products.removeAll(this.selectedProducts);
         this.selectedProducts = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Products Removed"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Productos Eliminados"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
+    }
+    
+    public String salir(){
+         return  "";
     }
 
     public PieChartModel getPieModel1() {

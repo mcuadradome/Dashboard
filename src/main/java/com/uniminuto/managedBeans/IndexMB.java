@@ -33,15 +33,37 @@ public class IndexMB implements Serializable {
     }   
     
     public String ingresar(){
-       String redirect = "";    
-       return redirect = "/protected/products";
+     
+       return  "/protected/products";
         
      
        
+    }
+    
+    public boolean recovery(){
+        return true;
     }
     
     
      public String register(){
          return null;
      }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+     
+     
 }
