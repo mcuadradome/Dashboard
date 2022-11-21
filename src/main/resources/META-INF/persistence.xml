@@ -13,6 +13,8 @@
     <class>com.uniminuto.Entities.DimAlmacen</class>
     <class>com.uniminuto.Entities.DimProveedor</class>
     <class>com.uniminuto.Entities.DimProducto</class>
+    <class>com.uniminuto.Entities.UserRegister</class>
+    <class>com.uniminuto.Entities.UserAccess</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>

@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,29 +27,27 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Miguel
  */
 @Entity
-@Table(name = "DIM_MARCA")
+@Table(name = "dim_marca")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DimMarca.findAll", query = "SELECT d FROM DimMarca d"),
-    @NamedQuery(name = "DimMarca.findAllOrder", query = "SELECT d FROM DimMarca d ORDER BY d.nombre")
-    , @NamedQuery(name = "DimMarca.findByIdMarca", query = "SELECT d FROM DimMarca d WHERE d.idMarca = :idMarca")
-    , @NamedQuery(name = "DimMarca.findByNombre", query = "SELECT d FROM DimMarca d WHERE d.nombre = :nombre")})
+    @NamedQuery(name = "DimMarca.findByIdMarca", query = "SELECT d FROM DimMarca d WHERE d.idMarca = :idMarca"),
+    @NamedQuery(name = "DimMarca.findByNombre", query = "SELECT d FROM DimMarca d WHERE d.nombre = :nombre")})
 public class DimMarca implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_marca")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idMarca;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimMarcaFk")
-    private List<DimProducto> dimProductoList;
+    private Collection<DimProducto> dimProductoCollection;
 
     public DimMarca() {
     }
@@ -81,12 +78,12 @@ public class DimMarca implements Serializable {
     }
 
     @XmlTransient
-    public List<DimProducto> getDimProductoList() {
-        return dimProductoList;
+    public Collection<DimProducto> getDimProductoCollection() {
+        return dimProductoCollection;
     }
 
-    public void setDimProductoList(List<DimProducto> dimProductoList) {
-        this.dimProductoList = dimProductoList;
+    public void setDimProductoCollection(Collection<DimProducto> dimProductoCollection) {
+        this.dimProductoCollection = dimProductoCollection;
     }
 
     @Override

@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,53 +27,57 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Miguel
  */
 @Entity
-@Table(name = "DIM_PROVEEDOR")
+@Table(name = "dim_proveedor")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DimProveedor.findAll", query = "SELECT d FROM DimProveedor d")
-    , @NamedQuery(name = "DimProveedor.findByIdProvedor", query = "SELECT d FROM DimProveedor d WHERE d.idProvedor = :idProvedor")
-    , @NamedQuery(name = "DimProveedor.findByNombreEmpresa", query = "SELECT d FROM DimProveedor d WHERE d.nombreEmpresa = :nombreEmpresa")
-    , @NamedQuery(name = "DimProveedor.findByDireccion", query = "SELECT d FROM DimProveedor d WHERE d.direccion = :direccion")
-    , @NamedQuery(name = "DimProveedor.findByMunicipio", query = "SELECT d FROM DimProveedor d WHERE d.municipio = :municipio")
-    , @NamedQuery(name = "DimProveedor.findByTelefono", query = "SELECT d FROM DimProveedor d WHERE d.telefono = :telefono")
-    , @NamedQuery(name = "DimProveedor.findByCorreo", query = "SELECT d FROM DimProveedor d WHERE d.correo = :correo")
-    , @NamedQuery(name = "DimProveedor.findByNit", query = "SELECT d FROM DimProveedor d WHERE d.nit = :nit")})
+    @NamedQuery(name = "DimProveedor.findAll", query = "SELECT d FROM DimProveedor d"),
+    @NamedQuery(name = "DimProveedor.findByIdProvedor", query = "SELECT d FROM DimProveedor d WHERE d.idProvedor = :idProvedor"),
+    @NamedQuery(name = "DimProveedor.findByCorreo", query = "SELECT d FROM DimProveedor d WHERE d.correo = :correo"),
+    @NamedQuery(name = "DimProveedor.findByDireccion", query = "SELECT d FROM DimProveedor d WHERE d.direccion = :direccion"),
+    @NamedQuery(name = "DimProveedor.findByMunicipio", query = "SELECT d FROM DimProveedor d WHERE d.municipio = :municipio"),
+    @NamedQuery(name = "DimProveedor.findByNit", query = "SELECT d FROM DimProveedor d WHERE d.nit = :nit"),
+    @NamedQuery(name = "DimProveedor.findByNombreEmpresa", query = "SELECT d FROM DimProveedor d WHERE d.nombreEmpresa = :nombreEmpresa"),
+    @NamedQuery(name = "DimProveedor.findByTelefono", query = "SELECT d FROM DimProveedor d WHERE d.telefono = :telefono")})
 public class DimProveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_provedor")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idProvedor;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "nombre_empresa")
-    private String nombreEmpresa;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "direccion")
-    private String direccion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "municipio")
-    private String municipio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "telefono")
-    private String telefono;
-    @Basic(optional = false)
-    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "direccion")
+    private String direccion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "municipio")
+    private String municipio;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "nit")
     private String nit;
-    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre_empresa")
+    private String nombreEmpresa;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "telefono")
+    private String telefono;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimProveedor")
-    private List<HechoVentas> hechoVentasList;
+    private Collection<HechoVentas> hechoVentasCollection;
 
     public DimProveedor() {
     }
@@ -83,14 +86,14 @@ public class DimProveedor implements Serializable {
         this.idProvedor = idProvedor;
     }
 
-    public DimProveedor(Integer idProvedor, String nombreEmpresa, String direccion, String municipio, String telefono, String correo, String nit) {
+    public DimProveedor(Integer idProvedor, String correo, String direccion, String municipio, String nit, String nombreEmpresa, String telefono) {
         this.idProvedor = idProvedor;
-        this.nombreEmpresa = nombreEmpresa;
+        this.correo = correo;
         this.direccion = direccion;
         this.municipio = municipio;
-        this.telefono = telefono;
-        this.correo = correo;
         this.nit = nit;
+        this.nombreEmpresa = nombreEmpresa;
+        this.telefono = telefono;
     }
 
     public Integer getIdProvedor() {
@@ -101,12 +104,12 @@ public class DimProveedor implements Serializable {
         this.idProvedor = idProvedor;
     }
 
-    public String getNombreEmpresa() {
-        return nombreEmpresa;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setNombreEmpresa(String nombreEmpresa) {
-        this.nombreEmpresa = nombreEmpresa;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public String getDireccion() {
@@ -125,22 +128,6 @@ public class DimProveedor implements Serializable {
         this.municipio = municipio;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
     public String getNit() {
         return nit;
     }
@@ -149,13 +136,29 @@ public class DimProveedor implements Serializable {
         this.nit = nit;
     }
 
-    @XmlTransient
-    public List<HechoVentas> getHechoVentasList() {
-        return hechoVentasList;
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
     }
 
-    public void setHechoVentasList(List<HechoVentas> hechoVentasList) {
-        this.hechoVentasList = hechoVentasList;
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    @XmlTransient
+    public Collection<HechoVentas> getHechoVentasCollection() {
+        return hechoVentasCollection;
+    }
+
+    public void setHechoVentasCollection(Collection<HechoVentas> hechoVentasCollection) {
+        this.hechoVentasCollection = hechoVentasCollection;
     }
 
     @Override

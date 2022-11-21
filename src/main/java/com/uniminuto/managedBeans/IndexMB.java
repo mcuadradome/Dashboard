@@ -21,7 +21,7 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 public class IndexMB implements Serializable {
 
-    String user, password;
+    String user="", password="", emailRecovery="", passwordRegister="", email="";
     
     public IndexMB() {
     }
@@ -64,6 +64,32 @@ public class IndexMB implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getEmailRecovery() {
+        return emailRecovery;
+    }
+
+    public void setEmailRecovery(String emailRecovery) {
+        this.emailRecovery = emailRecovery;
+    }
+
+    public String getPasswordRegister() {
+        return passwordRegister;
+    }
+
+    public void setPasswordRegister(String passwordRegister) {
+        this.passwordRegister = passwordRegister;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
      
      
 }

@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,70 +27,69 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Miguel
  */
 @Entity
-@Table(name = "DIM_EMPLEADO")
+@Table(name = "dim_empleado")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DimEmpleado.findAll", query = "SELECT d FROM DimEmpleado d")
-    , @NamedQuery(name = "DimEmpleado.findByIdEmpleado", query = "SELECT d FROM DimEmpleado d WHERE d.idEmpleado = :idEmpleado")
-    , @NamedQuery(name = "DimEmpleado.findByNombre", query = "SELECT d FROM DimEmpleado d WHERE d.nombre = :nombre")
-    , @NamedQuery(name = "DimEmpleado.findByIdentificacion", query = "SELECT d FROM DimEmpleado d WHERE d.identificacion = :identificacion")
-    , @NamedQuery(name = "DimEmpleado.findByDireccion", query = "SELECT d FROM DimEmpleado d WHERE d.direccion = :direccion")
-    , @NamedQuery(name = "DimEmpleado.findByTelefono", query = "SELECT d FROM DimEmpleado d WHERE d.telefono = :telefono")
-    , @NamedQuery(name = "DimEmpleado.findByEmail", query = "SELECT d FROM DimEmpleado d WHERE d.email = :email")
-    , @NamedQuery(name = "DimEmpleado.findByEstadoCivil", query = "SELECT d FROM DimEmpleado d WHERE d.estadoCivil = :estadoCivil")
-    , @NamedQuery(name = "DimEmpleado.findByFechaNacimiento", query = "SELECT d FROM DimEmpleado d WHERE d.fechaNacimiento = :fechaNacimiento")
-    , @NamedQuery(name = "DimEmpleado.findBySalario", query = "SELECT d FROM DimEmpleado d WHERE d.salario = :salario")})
+    @NamedQuery(name = "DimEmpleado.findAll", query = "SELECT d FROM DimEmpleado d"),
+    @NamedQuery(name = "DimEmpleado.findByIdEmpleado", query = "SELECT d FROM DimEmpleado d WHERE d.idEmpleado = :idEmpleado"),
+    @NamedQuery(name = "DimEmpleado.findByDireccion", query = "SELECT d FROM DimEmpleado d WHERE d.direccion = :direccion"),
+    @NamedQuery(name = "DimEmpleado.findByEmail", query = "SELECT d FROM DimEmpleado d WHERE d.email = :email"),
+    @NamedQuery(name = "DimEmpleado.findByEstadoCivil", query = "SELECT d FROM DimEmpleado d WHERE d.estadoCivil = :estadoCivil"),
+    @NamedQuery(name = "DimEmpleado.findByFechaNacimiento", query = "SELECT d FROM DimEmpleado d WHERE d.fechaNacimiento = :fechaNacimiento"),
+    @NamedQuery(name = "DimEmpleado.findByIdentificacion", query = "SELECT d FROM DimEmpleado d WHERE d.identificacion = :identificacion"),
+    @NamedQuery(name = "DimEmpleado.findByNombre", query = "SELECT d FROM DimEmpleado d WHERE d.nombre = :nombre"),
+    @NamedQuery(name = "DimEmpleado.findBySalario", query = "SELECT d FROM DimEmpleado d WHERE d.salario = :salario"),
+    @NamedQuery(name = "DimEmpleado.findByTelefono", query = "SELECT d FROM DimEmpleado d WHERE d.telefono = :telefono")})
 public class DimEmpleado implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_empleado")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idEmpleado;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
-    private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "identificacion")
-    private String identificacion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "direccion")
     private String direccion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "telefono")
-    private String telefono;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "email")
     private String email;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "estado_civil")
     private String estadoCivil;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "fecha_nacimiento")
     private String fechaNacimiento;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "identificacion")
+    private String identificacion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre")
+    private String nombre;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "salario")
-    private Double salario;
+    private double salario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "telefono")
+    private String telefono;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimEmpleado")
-    private List<HechoVentas> hechoVentasList;
+    private Collection<HechoVentas> hechoVentasCollection;
 
     public DimEmpleado() {
     }
@@ -100,16 +98,16 @@ public class DimEmpleado implements Serializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public DimEmpleado(Integer idEmpleado, String nombre, String identificacion, String direccion, String telefono, String email, String estadoCivil, String fechaNacimiento, Double salario) {
+    public DimEmpleado(Integer idEmpleado, String direccion, String email, String estadoCivil, String fechaNacimiento, String identificacion, String nombre, double salario, String telefono) {
         this.idEmpleado = idEmpleado;
-        this.nombre = nombre;
-        this.identificacion = identificacion;
         this.direccion = direccion;
-        this.telefono = telefono;
         this.email = email;
         this.estadoCivil = estadoCivil;
         this.fechaNacimiento = fechaNacimiento;
+        this.identificacion = identificacion;
+        this.nombre = nombre;
         this.salario = salario;
+        this.telefono = telefono;
     }
 
     public Integer getIdEmpleado() {
@@ -120,36 +118,12 @@ public class DimEmpleado implements Serializable {
         this.idEmpleado = idEmpleado;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getIdentificacion() {
-        return identificacion;
-    }
-
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
-    }
-
     public String getDireccion() {
         return direccion;
     }
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
     }
 
     public String getEmail() {
@@ -176,21 +150,45 @@ public class DimEmpleado implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Double getSalario() {
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getSalario() {
         return salario;
     }
 
-    public void setSalario(Double salario) {
+    public void setSalario(double salario) {
         this.salario = salario;
     }
 
-    @XmlTransient
-    public List<HechoVentas> getHechoVentasList() {
-        return hechoVentasList;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setHechoVentasList(List<HechoVentas> hechoVentasList) {
-        this.hechoVentasList = hechoVentasList;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    @XmlTransient
+    public Collection<HechoVentas> getHechoVentasCollection() {
+        return hechoVentasCollection;
+    }
+
+    public void setHechoVentasCollection(Collection<HechoVentas> hechoVentasCollection) {
+        this.hechoVentasCollection = hechoVentasCollection;
     }
 
     @Override

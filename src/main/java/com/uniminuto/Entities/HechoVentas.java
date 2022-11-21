@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
@@ -25,23 +24,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Miguel
  */
 @Entity
-@Table(name = "HECHO_VENTAS")
+@Table(name = "hecho_ventas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HechoVentas.findAll", query = "SELECT h FROM HechoVentas h")
-    , @NamedQuery(name = "HechoVentas.findById", query = "SELECT h FROM HechoVentas h WHERE h.id = :id")
-    , @NamedQuery(name = "HechoVentas.findByDimCategoria", query = "SELECT h FROM HechoVentas h WHERE h.dimCategoria = :dimCategoria")
-    , @NamedQuery(name = "HechoVentas.findByDimMarca", query = "SELECT h FROM HechoVentas h WHERE h.dimMarca = :dimMarca")
-    , @NamedQuery(name = "HechoVentas.findByUnidades", query = "SELECT h FROM HechoVentas h WHERE h.unidades = :unidades")
-    , @NamedQuery(name = "HechoVentas.findByPrecio", query = "SELECT h FROM HechoVentas h WHERE h.precio = :precio")})
+    @NamedQuery(name = "HechoVentas.findAll", query = "SELECT h FROM HechoVentas h"),
+    @NamedQuery(name = "HechoVentas.findById", query = "SELECT h FROM HechoVentas h WHERE h.id = :id"),
+    @NamedQuery(name = "HechoVentas.findByDimCategoria", query = "SELECT h FROM HechoVentas h WHERE h.dimCategoria = :dimCategoria"),
+    @NamedQuery(name = "HechoVentas.findByDimMarca", query = "SELECT h FROM HechoVentas h WHERE h.dimMarca = :dimMarca"),
+    @NamedQuery(name = "HechoVentas.findByPrecio", query = "SELECT h FROM HechoVentas h WHERE h.precio = :precio"),
+    @NamedQuery(name = "HechoVentas.findByUnidades", query = "SELECT h FROM HechoVentas h WHERE h.unidades = :unidades")})
 public class HechoVentas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer id;
     @Basic(optional = false)
     @NotNull
@@ -53,12 +51,12 @@ public class HechoVentas implements Serializable {
     private int dimMarca;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "unidades")
-    private int unidades;
+    @Column(name = "precio")
+    private double precio;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "precio")
-    private Double precio;
+    @Column(name = "unidades")
+    private int unidades;
     @JoinColumn(name = "dim_almacen", referencedColumnName = "id_almacen")
     @ManyToOne(optional = false)
     private DimAlmacen dimAlmacen;
@@ -80,6 +78,9 @@ public class HechoVentas implements Serializable {
     @JoinColumn(name = "dim_tiempo", referencedColumnName = "id_tiempo")
     @ManyToOne(optional = false)
     private DimTiempo dimTiempo;
+    @JoinColumn(name = "fk_user", referencedColumnName = "id")
+    @ManyToOne
+    private UserRegister fkUser;
 
     public HechoVentas() {
     }
@@ -88,12 +89,12 @@ public class HechoVentas implements Serializable {
         this.id = id;
     }
 
-    public HechoVentas(Integer id, int dimCategoria, int dimMarca, int unidades, Double precio) {
+    public HechoVentas(Integer id, int dimCategoria, int dimMarca, double precio, int unidades) {
         this.id = id;
         this.dimCategoria = dimCategoria;
         this.dimMarca = dimMarca;
-        this.unidades = unidades;
         this.precio = precio;
+        this.unidades = unidades;
     }
 
     public Integer getId() {
@@ -120,20 +121,20 @@ public class HechoVentas implements Serializable {
         this.dimMarca = dimMarca;
     }
 
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
     public int getUnidades() {
         return unidades;
     }
 
     public void setUnidades(int unidades) {
         this.unidades = unidades;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
     }
 
     public DimAlmacen getDimAlmacen() {
@@ -190,6 +191,14 @@ public class HechoVentas implements Serializable {
 
     public void setDimTiempo(DimTiempo dimTiempo) {
         this.dimTiempo = dimTiempo;
+    }
+
+    public UserRegister getFkUser() {
+        return fkUser;
+    }
+
+    public void setFkUser(UserRegister fkUser) {
+        this.fkUser = fkUser;
     }
 
     @Override

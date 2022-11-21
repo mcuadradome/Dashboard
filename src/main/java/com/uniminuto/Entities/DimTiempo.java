@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,38 +27,33 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Miguel
  */
 @Entity
-@Table(name = "DIM_TIEMPO")
+@Table(name = "dim_tiempo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DimTiempo.findAll", query = "SELECT d FROM DimTiempo d")
-    , @NamedQuery(name = "DimTiempo.findByIdTiempo", query = "SELECT d FROM DimTiempo d WHERE d.idTiempo = :idTiempo")
-    , @NamedQuery(name = "DimTiempo.findByFecha", query = "SELECT d FROM DimTiempo d WHERE d.fecha = :fecha")
-    , @NamedQuery(name = "DimTiempo.findByAnio", query = "SELECT d FROM DimTiempo d WHERE d.anio = :anio")
-    , @NamedQuery(name = "DimTiempo.findByTrimestre", query = "SELECT d FROM DimTiempo d WHERE d.trimestre = :trimestre")
-    , @NamedQuery(name = "DimTiempo.findByMes", query = "SELECT d FROM DimTiempo d WHERE d.mes = :mes")
-    , @NamedQuery(name = "DimTiempo.findBySemana", query = "SELECT d FROM DimTiempo d WHERE d.semana = :semana")
-    , @NamedQuery(name = "DimTiempo.findByDia", query = "SELECT d FROM DimTiempo d WHERE d.dia = :dia")})
+    @NamedQuery(name = "DimTiempo.findAll", query = "SELECT d FROM DimTiempo d"),
+    @NamedQuery(name = "DimTiempo.findByIdTiempo", query = "SELECT d FROM DimTiempo d WHERE d.idTiempo = :idTiempo"),
+    @NamedQuery(name = "DimTiempo.findByAnio", query = "SELECT d FROM DimTiempo d WHERE d.anio = :anio"),
+    @NamedQuery(name = "DimTiempo.findByDia", query = "SELECT d FROM DimTiempo d WHERE d.dia = :dia"),
+    @NamedQuery(name = "DimTiempo.findByMes", query = "SELECT d FROM DimTiempo d WHERE d.mes = :mes"),
+    @NamedQuery(name = "DimTiempo.findBySemana", query = "SELECT d FROM DimTiempo d WHERE d.semana = :semana"),
+    @NamedQuery(name = "DimTiempo.findByTrimestre", query = "SELECT d FROM DimTiempo d WHERE d.trimestre = :trimestre"),
+    @NamedQuery(name = "DimTiempo.findByFecha", query = "SELECT d FROM DimTiempo d WHERE d.fecha = :fecha")})
 public class DimTiempo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_tiempo")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idTiempo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "fecha")
-    private String fecha;
     @Basic(optional = false)
     @NotNull
     @Column(name = "anio")
     private int anio;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "trimestre")
-    private int trimestre;
+    @Column(name = "dia")
+    private int dia;
     @Basic(optional = false)
     @NotNull
     @Column(name = "mes")
@@ -70,10 +64,13 @@ public class DimTiempo implements Serializable {
     private int semana;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "dia")
-    private int dia;
+    @Column(name = "trimestre")
+    private int trimestre;
+    @Size(max = 2147483647)
+    @Column(name = "fecha")
+    private String fecha;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimTiempo")
-    private List<HechoVentas> hechoVentasList;
+    private Collection<HechoVentas> hechoVentasCollection;
 
     public DimTiempo() {
     }
@@ -82,14 +79,13 @@ public class DimTiempo implements Serializable {
         this.idTiempo = idTiempo;
     }
 
-    public DimTiempo(Integer idTiempo, String fecha, int anio, int trimestre, int mes, int semana, int dia) {
+    public DimTiempo(Integer idTiempo, int anio, int dia, int mes, int semana, int trimestre) {
         this.idTiempo = idTiempo;
-        this.fecha = fecha;
         this.anio = anio;
-        this.trimestre = trimestre;
+        this.dia = dia;
         this.mes = mes;
         this.semana = semana;
-        this.dia = dia;
+        this.trimestre = trimestre;
     }
 
     public Integer getIdTiempo() {
@@ -100,14 +96,6 @@ public class DimTiempo implements Serializable {
         this.idTiempo = idTiempo;
     }
 
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
     public int getAnio() {
         return anio;
     }
@@ -116,12 +104,12 @@ public class DimTiempo implements Serializable {
         this.anio = anio;
     }
 
-    public int getTrimestre() {
-        return trimestre;
+    public int getDia() {
+        return dia;
     }
 
-    public void setTrimestre(int trimestre) {
-        this.trimestre = trimestre;
+    public void setDia(int dia) {
+        this.dia = dia;
     }
 
     public int getMes() {
@@ -140,21 +128,29 @@ public class DimTiempo implements Serializable {
         this.semana = semana;
     }
 
-    public int getDia() {
-        return dia;
+    public int getTrimestre() {
+        return trimestre;
     }
 
-    public void setDia(int dia) {
-        this.dia = dia;
+    public void setTrimestre(int trimestre) {
+        this.trimestre = trimestre;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     @XmlTransient
-    public List<HechoVentas> getHechoVentasList() {
-        return hechoVentasList;
+    public Collection<HechoVentas> getHechoVentasCollection() {
+        return hechoVentasCollection;
     }
 
-    public void setHechoVentasList(List<HechoVentas> hechoVentasList) {
-        this.hechoVentasList = hechoVentasList;
+    public void setHechoVentasCollection(Collection<HechoVentas> hechoVentasCollection) {
+        this.hechoVentasCollection = hechoVentasCollection;
     }
 
     @Override

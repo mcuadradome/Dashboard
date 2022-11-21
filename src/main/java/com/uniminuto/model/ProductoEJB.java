@@ -266,6 +266,7 @@ public class ProductoEJB extends AbstractFacade {
     
     public DimProducto saveProduct(DimProducto producto){
         if(producto != null){
+            System.out.println("com.uniminuto.model.ProductoEJB.saveProduct()" + producto.toString());
             producto = em.merge(producto);
         }    
         return  producto;

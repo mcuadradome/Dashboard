@@ -254,9 +254,17 @@ and open the template in the editor.
             <p:dialog  header="Detalles producto" showEffect="fade" widgetVar="manageProductDialog" responsive="true" modal="true">
                 <p:outputPanel id="manage-product-content" class="ui-fluid">
                     <p:outputPanel rendered="#{not empty productoMB.selectedProduct}">
+                         <div class="field" style="margin-top: 5px">
+                            <p:outputLabel for="cod">Codigo</p:outputLabel>
+                            <p:inputText id="cod" value="#{productoMB.selectedProduct.codProdcuto}" required="true" />
+                        </div>
                         <div class="field" style="margin-top: 5px">
                             <p:outputLabel for="name">Nombre</p:outputLabel>
                             <p:inputText id="name" value="#{productoMB.selectedProduct.nombre}" required="true" />
+                        </div>
+                         <div class="field" style="margin-top: 5px">
+                            <p:outputLabel for="peso">Peso</p:outputLabel>
+                            <p:inputText id="peso" value="#{productoMB.selectedProduct.peso}" required="true" />
                         </div>
                         <div class="field" style="margin-top: 5px">
                             <p:outputLabel for="fabricante">Fabricante</p:outputLabel>

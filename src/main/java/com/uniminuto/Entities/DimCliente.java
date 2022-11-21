@@ -1,13 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,63 +30,64 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Miguel
  */
 @Entity
-@Table(name = "DIM_CLIENTE")
+@Table(name = "dim_cliente")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DimCliente.findAll", query = "SELECT d FROM DimCliente d")
-    , @NamedQuery(name = "DimCliente.findByIdCliente", query = "SELECT d FROM DimCliente d WHERE d.idCliente = :idCliente")
-    , @NamedQuery(name = "DimCliente.findByNombre", query = "SELECT d FROM DimCliente d WHERE d.nombre = :nombre")
-    , @NamedQuery(name = "DimCliente.findByIdentificacion", query = "SELECT d FROM DimCliente d WHERE d.identificacion = :identificacion")
-    , @NamedQuery(name = "DimCliente.findByDireccion", query = "SELECT d FROM DimCliente d WHERE d.direccion = :direccion")
-    , @NamedQuery(name = "DimCliente.findByTelefono", query = "SELECT d FROM DimCliente d WHERE d.telefono = :telefono")
-    , @NamedQuery(name = "DimCliente.findByEmail", query = "SELECT d FROM DimCliente d WHERE d.email = :email")
-    , @NamedQuery(name = "DimCliente.findByCiudad", query = "SELECT d FROM DimCliente d WHERE d.ciudad = :ciudad")
-    , @NamedQuery(name = "DimCliente.findByFechaRegistro", query = "SELECT d FROM DimCliente d WHERE d.fechaRegistro = :fechaRegistro")})
+    @NamedQuery(name = "DimCliente.findAll", query = "SELECT d FROM DimCliente d"),
+    @NamedQuery(name = "DimCliente.findByIdCliente", query = "SELECT d FROM DimCliente d WHERE d.idCliente = :idCliente"),
+    @NamedQuery(name = "DimCliente.findByCiudad", query = "SELECT d FROM DimCliente d WHERE d.ciudad = :ciudad"),
+    @NamedQuery(name = "DimCliente.findByDireccion", query = "SELECT d FROM DimCliente d WHERE d.direccion = :direccion"),
+    @NamedQuery(name = "DimCliente.findByEmail", query = "SELECT d FROM DimCliente d WHERE d.email = :email"),
+    @NamedQuery(name = "DimCliente.findByFechaRegistro", query = "SELECT d FROM DimCliente d WHERE d.fechaRegistro = :fechaRegistro"),
+    @NamedQuery(name = "DimCliente.findByIdentificacion", query = "SELECT d FROM DimCliente d WHERE d.identificacion = :identificacion"),
+    @NamedQuery(name = "DimCliente.findByNombre", query = "SELECT d FROM DimCliente d WHERE d.nombre = :nombre"),
+    @NamedQuery(name = "DimCliente.findByTelefono", query = "SELECT d FROM DimCliente d WHERE d.telefono = :telefono")})
 public class DimCliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_cliente")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idCliente;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "nombre")
-    private String nombre;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "ciudad")
+    private String ciudad;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "identificacion")
-    private String identificacion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "direccion")
     private String direccion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "telefono")
-    private String telefono;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "email")
     private String email;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "ciudad")
-    private String ciudad;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_registro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistro;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "identificacion")
+    private String identificacion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre")
+    private String nombre;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "telefono")
+    private String telefono;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimCliente")
-    private List<HechoVentas> hechoVentasList;
+    private Collection<HechoVentas> hechoVentasCollection;
 
     public DimCliente() {
     }
@@ -96,15 +96,15 @@ public class DimCliente implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public DimCliente(Integer idCliente, String nombre, String identificacion, String direccion, String telefono, String email, String ciudad, Date fechaRegistro) {
+    public DimCliente(Integer idCliente, String ciudad, String direccion, String email, Date fechaRegistro, String identificacion, String nombre, String telefono) {
         this.idCliente = idCliente;
-        this.nombre = nombre;
-        this.identificacion = identificacion;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.email = email;
         this.ciudad = ciudad;
+        this.direccion = direccion;
+        this.email = email;
         this.fechaRegistro = fechaRegistro;
+        this.identificacion = identificacion;
+        this.nombre = nombre;
+        this.telefono = telefono;
     }
 
     public Integer getIdCliente() {
@@ -115,20 +115,12 @@ public class DimCliente implements Serializable {
         this.idCliente = idCliente;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getCiudad() {
+        return ciudad;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getIdentificacion() {
-        return identificacion;
-    }
-
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
     public String getDireccion() {
@@ -139,28 +131,12 @@ public class DimCliente implements Serializable {
         this.direccion = direccion;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
     }
 
     public Date getFechaRegistro() {
@@ -171,13 +147,37 @@ public class DimCliente implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
-    @XmlTransient
-    public List<HechoVentas> getHechoVentasList() {
-        return hechoVentasList;
+    public String getIdentificacion() {
+        return identificacion;
     }
 
-    public void setHechoVentasList(List<HechoVentas> hechoVentasList) {
-        this.hechoVentasList = hechoVentasList;
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    @XmlTransient
+    public Collection<HechoVentas> getHechoVentasCollection() {
+        return hechoVentasCollection;
+    }
+
+    public void setHechoVentasCollection(Collection<HechoVentas> hechoVentasCollection) {
+        this.hechoVentasCollection = hechoVentasCollection;
     }
 
     @Override

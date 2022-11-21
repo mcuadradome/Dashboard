@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.uniminuto.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,42 +27,45 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Miguel
  */
 @Entity
-@Table(name = "DIM_PROMOCION")
+@Table(name = "dim_promocion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DimPromocion.findAll", query = "SELECT d FROM DimPromocion d")
-    , @NamedQuery(name = "DimPromocion.findByIdPromocion", query = "SELECT d FROM DimPromocion d WHERE d.idPromocion = :idPromocion")
-    , @NamedQuery(name = "DimPromocion.findByNombre", query = "SELECT d FROM DimPromocion d WHERE d.nombre = :nombre")
-    , @NamedQuery(name = "DimPromocion.findByTipo", query = "SELECT d FROM DimPromocion d WHERE d.tipo = :tipo")
-    , @NamedQuery(name = "DimPromocion.findByFechaInicio", query = "SELECT d FROM DimPromocion d WHERE d.fechaInicio = :fechaInicio")
-    , @NamedQuery(name = "DimPromocion.findByFechaFin", query = "SELECT d FROM DimPromocion d WHERE d.fechaFin = :fechaFin")})
+    @NamedQuery(name = "DimPromocion.findAll", query = "SELECT d FROM DimPromocion d"),
+    @NamedQuery(name = "DimPromocion.findByIdPromocion", query = "SELECT d FROM DimPromocion d WHERE d.idPromocion = :idPromocion"),
+    @NamedQuery(name = "DimPromocion.findByFechaFin", query = "SELECT d FROM DimPromocion d WHERE d.fechaFin = :fechaFin"),
+    @NamedQuery(name = "DimPromocion.findByFechaInicio", query = "SELECT d FROM DimPromocion d WHERE d.fechaInicio = :fechaInicio"),
+    @NamedQuery(name = "DimPromocion.findByNombre", query = "SELECT d FROM DimPromocion d WHERE d.nombre = :nombre"),
+    @NamedQuery(name = "DimPromocion.findByTipo", query = "SELECT d FROM DimPromocion d WHERE d.tipo = :tipo")})
 public class DimPromocion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_promocion")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)	
     private Integer idPromocion;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "nombre")
-    private String nombre;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "fecha_fin")
+    private String fechaFin;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "tipo")
-    private String tipo;
-    @Basic(optional = false)
-    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "fecha_inicio")
     private String fechaInicio;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fecha_fin")
-    private String fechaFin;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre")
+    private String nombre;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "tipo")
+    private String tipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimPromocion")
-    private List<HechoVentas> hechoVentasList;
+    private Collection<HechoVentas> hechoVentasCollection;
 
     public DimPromocion() {
     }
@@ -72,12 +74,12 @@ public class DimPromocion implements Serializable {
         this.idPromocion = idPromocion;
     }
 
-    public DimPromocion(Integer idPromocion, String nombre, String tipo, String fechaInicio, String fechaFin) {
+    public DimPromocion(Integer idPromocion, String fechaFin, String fechaInicio, String nombre, String tipo) {
         this.idPromocion = idPromocion;
+        this.fechaFin = fechaFin;
+        this.fechaInicio = fechaInicio;
         this.nombre = nombre;
         this.tipo = tipo;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
     }
 
     public Integer getIdPromocion() {
@@ -86,6 +88,22 @@ public class DimPromocion implements Serializable {
 
     public void setIdPromocion(Integer idPromocion) {
         this.idPromocion = idPromocion;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
     public String getNombre() {
@@ -104,29 +122,13 @@ public class DimPromocion implements Serializable {
         this.tipo = tipo;
     }
 
-    public String getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public String getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
     @XmlTransient
-    public List<HechoVentas> getHechoVentasList() {
-        return hechoVentasList;
+    public Collection<HechoVentas> getHechoVentasCollection() {
+        return hechoVentasCollection;
     }
 
-    public void setHechoVentasList(List<HechoVentas> hechoVentasList) {
-        this.hechoVentasList = hechoVentasList;
+    public void setHechoVentasCollection(Collection<HechoVentas> hechoVentasCollection) {
+        this.hechoVentasCollection = hechoVentasCollection;
     }
 
     @Override
