@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -61,7 +62,7 @@ public class ProductoEJB extends AbstractFacade {
     public List<DimMarca> getMarcas() {
         List<DimMarca> result = new ArrayList<>();
         try {
-            Query query = em.createNamedQuery("DimMarca.findAllOrder", DimMarca.class);
+            Query query = em.createNamedQuery("DimMarca.findAll", DimMarca.class);
             result = query.getResultList();
 
         } catch (Exception e) {
@@ -76,7 +77,7 @@ public class ProductoEJB extends AbstractFacade {
     public List<DimCategoria> getCategorias() {
         List<DimCategoria> result = new ArrayList<>();
         try {
-            Query query = em.createNamedQuery("DimCategoria.findAllOrder", DimCategoria.class);
+            Query query = em.createNamedQuery("DimCategoria.findAll", DimCategoria.class);
             result = query.getResultList();
         } catch (Exception e) {
             System.out.println("Error al consultar ciudades " + e.getMessage());
@@ -266,15 +267,25 @@ public class ProductoEJB extends AbstractFacade {
     
     public DimProducto saveProduct(DimProducto producto){
         if(producto != null){
-            System.out.println("com.uniminuto.model.ProductoEJB.saveProduct()" + producto.toString());
+            producto.setFechaIngreso(new Date());
+            
+            List<DimMarca> dimMarcas = getMarcas();
+            List<DimCategoria> categorias = getCategorias();
+            
+            producto.setDimCategoriaFk(categorias.get(0));
+            producto.setDimMarcaFk(dimMarcas.get(0));
+           
             producto = em.merge(producto);
+            
+            System.out.println("com.uniminuto.model.ProductoEJB.saveProduct()" + producto.toString());
         }    
         return  producto;
     }
     
     public void deleteProducts(List<DimProducto> dimProductos){
         for (DimProducto dimProducto : dimProductos) {
-            em.remove(dimProducto);     
+            System.out.println("producto " + dimProducto);
+            em.remove(dimProducto.getIdProducto());     
         }
     }
     

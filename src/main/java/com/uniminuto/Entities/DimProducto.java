@@ -82,10 +82,10 @@ public class DimProducto implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimProducto")
     private Collection<HechoVentas> hechoVentasCollection;
     @JoinColumn(name = "dim_categoria_fk", referencedColumnName = "id_categoria")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private DimCategoria dimCategoriaFk;
     @JoinColumn(name = "dim_marca_fk", referencedColumnName = "id_marca")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private DimMarca dimMarcaFk;
 
     public DimProducto() {

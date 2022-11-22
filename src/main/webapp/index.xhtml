@@ -15,7 +15,6 @@
         <style type="text/css">
 
             .container-login{
-                display: flex;
                 justify-content: center;
                 align-items: center;
             }
@@ -28,82 +27,85 @@
                 <p:tab title="Ingreso" >
                     <h:form class="container-login" id="formLogin">
                         <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
-                        <div class="form-outline mb-4 w-50">
-                            <span class="ui-float-label">
-                                <p:inputText id="user" value="#{indexMB.user}"/>
-                                <p:outputLabel for="@previous" value="Email"/>
-                            </span>
-                        </div>
-
-                        <!-- Password input -->
-                        <div class="form-outline mb-4 w-50">
-                            <span class="ui-float-label">
-                                <p:password id="pass" value="#{indexMB.password}" toggleMask="true" redisplay="true"/>
-                                <p:outputLabel for="@previous" value="Contraseña"/>
-                            </span>
-                        </div>
-
-
-                        <div class="row mb-4 w-50">
-                            <div class="col-md-12 d-flex justify-content-center">
-                                <!-- Simple link -->
-                                <p:commandLink id="nonAjax" onclick="PF('dlgRecovery').show()" class="mr-4" ajax="true"
-                                               value="Recuperar contraseña"/>
+                        <div class="container">
+                            <div class=" mb-4 w-50">
+                                <span class="ui-float-label">
+                                    <p:inputText id="user" value="#{indexMB.user}"/>
+                                    <p:outputLabel for="@previous" value="Email"/>
+                                </span>
                             </div>
+
+                            <!-- Password input -->
+                            <div class="mb-4 w-50">
+                                <span class="ui-float-label">
+                                    <p:password id="pass" value="#{indexMB.password}" toggleMask="true" redisplay="true"/>
+                                    <p:outputLabel for="@previous" value="Contraseña"/>
+                                </span>
+                            </div>
+
+
+                            <div class="row mb-4 w-50">
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <!-- Simple link -->
+                                    <p:commandLink id="nonAjax" onclick="PF('dlgRecovery').show()" class="mr-4" ajax="true"
+                                                   value="Recuperar contraseña"/>
+                                </div>
+                            </div>
+                            <p:commandButton class="btn btn-primary btn-block mb-3" value="Ingresar" action="#{indexMB.ingresar()}" ></p:commandButton>
                         </div>
-                        <p:commandButton class="btn btn-primary btn-block mb-3" value="Ingresar" action="#{indexMB.ingresar()}" ></p:commandButton>
                     </h:form>
                 </p:tab>
                 <p:tab title="Registro">
                     <!-- Email input -->
                     <h:form class="container-login" id="formRegister">
-                        
-                   
-                    <div class="form-outline mb-4">
-                        <span class="ui-float-label">
-                            <p:inputText id="registerEmail" value="#{indexMB.email}"/>
-                            <p:outputLabel for="@previous" value="Email"/>
-                        </span>
+                        <div class="container">
+                            <div class="mb-4">
+                                <span class="ui-float-label">
+                                    <p:inputText id="registerEmail" value="#{indexMB.email}"/>
+                                    <p:outputLabel for="@previous" value="Email"/>
+                                </span>
 
-                    </div>
+                            </div>
 
-                    <!-- Password input -->
-                    <div class="form-outline mb-4">
+                            <!-- Password input -->
+                            <div class="mb-4">
 
-                        <p:outputLabel for="pwd1" styleClass="col-fixed" style="width:100px" value="Contraseña"/>
-                        <div class="col">
-                            <p:password id="pwd1" value="#{indexMB.passwordRegister}" match="pwd2" label="Contraseña" required="true"
-                                        toggleMask="true" redisplay="true"
-                                        feedback="true"
-                                        promptLabel="Ingresa tu contraseña" weakLabel="Débil"
-                                        goodLabel="Buena" strongLabel="Fuerte"/>
+                                <p:outputLabel for="pwd1" styleClass="col-fixed" style="width:100px" value="Contraseña"/>
+                                <div class="col">
+                                    <p:password id="pwd1" value="#{indexMB.passwordRegister}" match="pwd2" label="Contraseña" required="true"
+                                                toggleMask="true" redisplay="true"
+                                                feedback="true"
+                                                promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+                                                goodLabel="Buena" strongLabel="Fuerte"/>
+                                </div>
+                            </div>
+
+                            <!-- Repeat Password input -->
+                            <div class="mb-4">
+                                <p:outputLabel for="pwd2" styleClass="col-fixed" style="width:100px" value="Password"/>
+                                <div class="col">
+                                    <p:password id="pwd2" value="#{indexMB.passwordRegister}" label="Confirmar contraseña" required="true" toggleMask="true" redisplay="true"/>
+                                </div>
+                            </div>
+
+
+                            <p:commandButton  class="btn btn-primary btn-block mb-3" value="Ingresar" action="#{indexMB.register()}" ></p:commandButton>   
                         </div>
-                    </div>
 
-                    <!-- Repeat Password input -->
-                    <div class="form-outline mb-4">
-                        <p:outputLabel for="pwd2" styleClass="col-fixed" style="width:100px" value="Password"/>
-                        <div class="col">
-                            <p:password id="pwd2" value="#{indexMB.passwordRegister}" label="Confirmar contraseña" required="true" toggleMask="true" redisplay="true"/>
-                        </div>
-                    </div>
-
-
-                    <p:commandButton  class="btn btn-primary btn-block mb-3" value="Ingresar" action="#{indexMB.register()}" ></p:commandButton>   
                     </h:form>
                 </p:tab>
             </p:tabView>
         </div>
         <p:dialog header="Recuperacion contraseña" widgetVar="dlgRecovery" minHeight="40" width="350" showEffect="fade" modal="true">
             <h:form  id="formRecovery">
-                 <label>Ingrese el email registrado</label>
-            <span class="ui-float-label mt-5">
-                <p:inputText id="pass" value="#{indexMB.emailRecovery}"/>
-                <p:outputLabel for="@previous" value="Email"/>
-            </span>
-            <p:commandButton  class="btn btn-primary btn-block mb-3 mt-3" value="Enviar" action="#{indexMB.recovery()}" ></p:commandButton>
+                <label>Ingrese el email registrado</label>
+                <span class="ui-float-label mt-5">
+                    <p:inputText id="pass" value="#{indexMB.emailRecovery}"/>
+                    <p:outputLabel for="@previous" value="Email"/>
+                </span>
+                <p:commandButton  class="btn btn-primary btn-block mb-3 mt-3" value="Enviar" action="#{indexMB.recovery()}" ></p:commandButton>
             </h:form>
-           
+
         </p:dialog>
 
 
